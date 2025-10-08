@@ -1,0 +1,273 @@
+/* Import Choices.js styles */
+@import 'choices.js/public/assets/styles/choices.css';
+
+/* Tailwind directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Admin-specific styles */
+@layer components {
+    /* Admin Layout */
+    .admin-sidebar {
+        @apply w-64 bg-gray-800 text-white min-h-screen fixed left-0 top-0 overflow-y-auto;
+    }
+
+    .admin-content {
+        @apply ml-64 p-8 bg-gray-100 min-h-screen;
+    }
+
+    .admin-nav-link {
+        @apply block px-6 py-3 hover:bg-gray-700 transition-colors;
+    }
+
+    .admin-nav-link.active {
+        @apply bg-orange-manga-600;
+    }
+
+    /* Admin Cards */
+    .admin-card {
+        @apply bg-white rounded-lg shadow-md p-6 mb-6;
+    }
+
+    .stat-card {
+        @apply bg-white rounded-lg shadow-md p-6;
+    }
+
+    .stat-card-value {
+        @apply text-3xl font-bold text-orange-manga-600;
+    }
+
+    .stat-card-label {
+        @apply text-gray-600 text-sm mt-2;
+    }
+
+    /* Forms */
+    .form-group {
+        @apply mb-4;
+    }
+
+    .form-label {
+        @apply block text-sm font-medium text-gray-700 mb-2;
+    }
+
+    .form-input {
+        @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-manga-500 focus:border-transparent;
+    }
+
+    .form-textarea {
+        @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-manga-500 focus:border-transparent;
+    }
+
+    .form-select {
+        @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-manga-500 focus:border-transparent;
+    }
+
+    .form-checkbox {
+        @apply w-4 h-4 text-orange-manga-600 border-gray-300 rounded focus:ring-orange-manga-500;
+    }
+
+    /* Buttons */
+    .btn-admin-primary {
+        @apply px-6 py-2 bg-orange-manga-600 text-white rounded-lg hover:bg-orange-manga-700 transition-colors;
+    }
+
+    .btn-admin-secondary {
+        @apply px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors;
+    }
+
+    .btn-admin-danger {
+        @apply px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors;
+    }
+
+    /* Tables */
+    .admin-table {
+        @apply w-full bg-white rounded-lg overflow-hidden shadow-md;
+    }
+
+    .admin-table thead {
+        @apply bg-gray-50;
+    }
+
+    .admin-table th {
+        @apply px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider;
+    }
+
+    .admin-table td {
+        @apply px-6 py-4 whitespace-nowrap text-sm text-gray-900;
+    }
+
+    .admin-table tbody tr:hover {
+        @apply bg-gray-50;
+    }
+
+    /* Image Preview */
+    .image-preview {
+        @apply mt-4 max-w-xs rounded-lg overflow-hidden shadow-md;
+    }
+
+    /* Badges */
+    .badge-admin {
+        @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+    }
+
+    .badge-success {
+        @apply badge-admin bg-green-100 text-green-800;
+    }
+
+    .badge-warning {
+        @apply badge-admin bg-yellow-100 text-yellow-800;
+    }
+
+    .badge-danger {
+        @apply badge-admin bg-red-100 text-red-800;
+    }
+
+    .badge-info {
+        @apply badge-admin bg-blue-100 text-blue-800;
+    }
+}
+
+/* Choices.js customization */
+.choices__inner {
+    @apply border-gray-300 rounded-lg min-h-[42px];
+}
+
+.choices__list--multiple .choices__item {
+    @apply bg-orange-manga-500 border-orange-manga-600;
+}
+
+.choices[data-type*='select-one'] .choices__button {
+    @apply border-l border-orange-manga-600;
+}
+
+/* Sortable.js Drag and Drop Styles */
+.sortable-ghost {
+    opacity: 0.4;
+    background: #f3f4f6;
+}
+
+.sortable-chosen {
+    cursor: grabbing !important;
+}
+
+.sortable-drag {
+    opacity: 1;
+    cursor: grabbing !important;
+}
+
+/* Image Item Transitions */
+.image-item {
+    transition: all 0.2s ease;
+}
+
+.image-item:hover {
+    transform: translateY(-2px);
+}
+
+/* Drag Handle Cursor */
+.drag-handle {
+    cursor: grab;
+}
+
+.drag-handle:active {
+    cursor: grabbing;
+}
+
+/* Upload Zone Animations */
+#drop-zone {
+    transition: all 0.3s ease;
+}
+
+#drop-zone.drag-over {
+    @apply border-orange-500 bg-orange-50 scale-105;
+}
+
+/* Loading Spinner */
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+/* Toast Slide In Animation */
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+#toast {
+    animation: slideIn 0.3s ease-out;
+}
+
+#toast.hide {
+    animation: slideOut 0.3s ease-in;
+}
+
+/* Image Delete Animation */
+.image-item.deleting {
+    animation: scaleOut 0.2s ease-out forwards;
+}
+
+@keyframes scaleOut {
+    to {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
+
+/* Preview Grid Fade In */
+#preview-grid,
+#preview-grid-create {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Preview Item Styles */
+.preview-item {
+    transition: all 0.2s ease;
+}
+
+.preview-item:hover {
+    transform: translateY(-2px);
+}
+
+/* Drag Handle for Preview */
+.drag-handle-preview {
+    cursor: grab;
+}
+
+.drag-handle-preview:active {
+    cursor: grabbing;
+}

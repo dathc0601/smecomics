@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    /* Gradient Backgrounds */
+    .bg-manga-gradient {
+        @apply bg-gradient-to-br from-orange-manga-300 via-peach-200 to-orange-manga-200;
+    }
+
+    .bg-manga-nav {
+        @apply bg-gradient-to-r from-orange-manga-400 to-peach-400;
+    }
+
+    /* Badge Styles */
+    .badge {
+        @apply inline-flex items-center px-2 py-1 text-xs font-bold rounded;
+    }
+
+    .badge-new {
+        @apply badge bg-green-500 text-white;
+    }
+
+    .badge-hot {
+        @apply badge bg-red-500 text-white;
+    }
+
+    .badge-18plus {
+        @apply badge bg-red-600 text-white;
+    }
+
+    .badge-end {
+        @apply badge bg-gray-600 text-white;
+    }
+
+    /* Manga Card */
+    .manga-card {
+        @apply bg-white rounded-2xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-manga-lg hover:-translate-y-1;
+    }
+
+    .manga-card-cover {
+        @apply w-full aspect-[3/4] object-cover;
+    }
+
+    /* Buttons */
+    .btn-primary {
+        @apply px-6 py-3 bg-gradient-to-r from-orange-manga-500 to-peach-500 text-white font-semibold rounded-full shadow-manga transition-all duration-300 hover:shadow-manga-lg hover:scale-105;
+    }
+
+    .btn-secondary {
+        @apply px-6 py-3 bg-white text-orange-manga-600 font-semibold rounded-full border-2 border-orange-manga-500 transition-all duration-300 hover:bg-orange-manga-50;
+    }
+
+    /* Comment Box */
+    .comment-box {
+        @apply bg-orange-manga-50 rounded-xl p-4 transition-colors hover:bg-orange-manga-100;
+    }
+
+    /* Tag Pills */
+    .tag-pill {
+        @apply inline-block px-3 py-1 text-sm bg-peach-100 text-peach-700 rounded-full hover:bg-peach-200 transition-colors;
+    }
+}
