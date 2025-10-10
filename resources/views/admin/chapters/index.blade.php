@@ -43,7 +43,6 @@
             <tr>
                 <th>ID</th>
                 <th>Manga</th>
-                <th>Chapter #</th>
                 <th>Title</th>
                 <th>Images</th>
                 <th>Views</th>
@@ -56,7 +55,6 @@
             <tr>
                 <td>{{ $chapter->id }}</td>
                 <td class="font-semibold text-sm">{{ $chapter->manga->title }}</td>
-                <td>Chapter {{ $chapter->chapter_number }}</td>
                 <td class="text-gray-600">{{ $chapter->title ?: '-' }}</td>
                 <td>
                     <span class="badge-info">{{ $chapter->images_count ?? $chapter->images->count() ?? 0 }} images</span>
