@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Admin Panel') - SME Comics</title>
     @vite(['resources/css/admin.css', 'resources/js/admin.js'])
+
+    @stack('styles')
 </head>
 <body class="bg-gray-100">
     <div class="flex">
@@ -36,6 +38,9 @@
                     👥 Users
                 </a>
                 <hr class="my-4 border-gray-700">
+                <a href="{{ route('admin.settings.index') }}" class="admin-nav-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
+                    ⚙️ Settings
+                </a>
                 <a href="{{ route('home') }}" class="admin-nav-link">
                     🏠 View Site
                 </a>
@@ -65,5 +70,7 @@
             @yield('content')
         </main>
     </div>
+
+@stack('scripts')
 </body>
 </html>

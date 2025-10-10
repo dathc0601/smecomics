@@ -16,7 +16,8 @@ use App\Http\Controllers\Admin\{
     GenreController as AdminGenreController,
     AuthorController as AdminAuthorController,
     TagController as AdminTagController,
-    UserController as AdminUserController
+    UserController as AdminUserController,
+    SettingController as AdminSettingController
 };
 use Illuminate\Support\Facades\Route;
 
@@ -66,6 +67,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('tags', AdminTagController::class)->except(['show']);
     Route::resource('users', AdminUserController::class)->only(['index', 'edit', 'update', 'destroy']);
     Route::post('users/{user}/toggle-admin', [AdminUserController::class, 'toggleAdmin'])->name('users.toggle-admin');
+
+    // Settings
+    Route::get('settings', [AdminSettingController::class, 'index'])->name('settings.index');
+    Route::post('settings', [AdminSettingController::class, 'update'])->name('settings.update');
+    Route::delete('settings/image', [AdminSettingController::class, 'deleteImage'])->name('settings.delete-image');
 });
 
 require __DIR__.'/auth.php';
