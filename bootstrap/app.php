@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Support\Facades\Log;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -18,4 +19,17 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
-    })->create();
+    })
+    ->withSchedule(function ($schedule) {
+        $schedule->command('sitemap:generate --force')
+            ->dailyAt('02:00')
+            ->withoutOverlapping()
+            ->runInBackground()
+            ->onSuccess(function () {
+                Log::info('Sitemap generated successfully');
+            })
+            ->onFailure(function () {
+                Log::error('Sitemap generation failed');
+            });
+    })
+    ->create();
