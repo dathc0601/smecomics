@@ -7,7 +7,8 @@ use App\Http\Controllers\{
     CommentController,
     BookmarkController,
     RatingController,
-    ProfileController
+    ProfileController,
+    SitemapController
 };
 use App\Http\Controllers\Admin\{
     DashboardController as AdminDashboardController,
@@ -23,6 +24,10 @@ use Illuminate\Support\Facades\Route;
 
 // Public routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Sitemap routes
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap.index');
+Route::get('/sitemap-{type}.xml', [SitemapController::class, 'show'])->name('sitemap.show');
 
 // Manga routes
 Route::get('/manga', [MangaController::class, 'index'])->name('manga.index');
