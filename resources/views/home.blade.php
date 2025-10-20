@@ -7,22 +7,23 @@
     <!-- Hero Carousel -->
     @if($featured->count() > 0)
     <section class="mb-12">
-        <div class="relative bg-gradient-to-r from-orange-manga-200 to-peach-200 rounded-3xl p-8 overflow-hidden">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                @foreach($featured->take(3) as $manga)
-                <a href="{{ route('manga.show', $manga->slug) }}" class="manga-card group">
-                    <img src="{{ $manga->cover_image ? \Illuminate\Support\Facades\Storage::url($manga->cover_image) : 'https://placehold.co/300x400?text=' . urlencode($manga->title) }}"
-                         alt="{{ $manga->title }}"
-                         class="manga-card-cover">
-                    <div class="p-4">
-                        <h3 class="font-bold text-lg mb-2 group-hover:text-orange-manga-600 transition">{{ $manga->title }}</h3>
-                        @if($manga->latestChapter)
-                        <p class="text-sm text-gray-600">Chapter {{ $manga->latestChapter->chapter_number }}</p>
-                        @endif
+        <div class="swiper hero-swiper">
+            <div class="swiper-wrapper">
+                @foreach($featured as $manga)
+                    <div class="swiper-slide !w-[285px] !h-auto !relative !overflow-hidden !rounded-lg">
+                        <a href="{{ route('manga.show', $manga->slug) }}">
+                            <img src="{{ $manga->cover_image ? \Illuminate\Support\Facades\Storage::url($manga->cover_image) : 'https://placehold.co/300x400?text=' . urlencode($manga->title) }}"
+                                 alt="{{ $manga->title }}"
+                                 class="!block !rounded-lg !object-cover !w-full !h-full"
+                            >
+                        </a>
                     </div>
-                </a>
                 @endforeach
             </div>
+
+            <!-- Navigation -->
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
         </div>
     </section>
     @endif
@@ -154,4 +155,34 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+    <script>
+        // Initialize Swiper
+        const heroSwiper = new Swiper('.hero-swiper', {
+            effect: "coverflow",
+            grabCursor: true,
+            slidesPerView: "auto",
+            loop: true,
+            autoplay: {
+                delay: 2000,
+            },
+            speed: 800,
+            centeredSlides: true,
+            coverflowEffect: {
+                rotate: 0,
+                stretch: 0,
+                depth: 100,
+                modifier: 2,
+                slideShadows: true
+            },
+
+            navigation: {
+                nextEl: '.hero-swiper .swiper-button-next',
+                prevEl: '.hero-swiper .swiper-button-prev',
+            },
+        });
+    </script>
+@endpush
+
 @endsection

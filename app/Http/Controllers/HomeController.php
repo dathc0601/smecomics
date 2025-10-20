@@ -13,7 +13,6 @@ class HomeController extends Controller
         // Featured manga for carousel
         $featured = Manga::where('is_featured', true)
             ->with(['genres', 'latestChapter'])
-            ->limit(5)
             ->get();
 
         // Newly updated manga
@@ -36,7 +35,6 @@ class HomeController extends Controller
             ->get();
 
         // Reading history for all visitors
-        $readingHistory = collect();
         if (auth()->check()) {
             // Authenticated user
             $readingHistory = ReadingHistory::where('user_id', auth()->id())
