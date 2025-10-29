@@ -36,7 +36,7 @@
                 <div class="flex items-center justify-between mb-6">
                     <h2 class="text-2xl font-bold text-gray-800 flex items-center">
                         <span class="text-orange-manga-500 mr-2">★</span>
-                        Newly Updated
+                        Mới cập nhật
                     </h2>
                 </div>
 
@@ -82,7 +82,7 @@
                 <div class="flex items-center justify-between mb-6">
                     <h2 class="text-2xl font-bold text-gray-800 flex items-center">
                         <span class="text-red-500 mr-2">🔞</span>
-                        Completed Mature
+                        Truyện 18+
                     </h2>
                 </div>
 
@@ -114,7 +114,7 @@
             <!-- Reading History -->
             @if($readingHistory->count() > 0)
             <div class="bg-white rounded-2xl shadow-md p-6 mb-6">
-                <h3 class="text-lg font-bold mb-4 text-orange-manga-600">📖 Continue Reading</h3>
+                <h3 class="text-lg font-bold mb-4 text-orange-manga-600">📖 Đọc tiếp</h3>
                 <div class="space-y-3">
                     @foreach($readingHistory as $history)
                     <a href="{{ route('chapter.show', ['manga' => $history->manga->slug, 'chapterNumber' => $history->chapter->chapter_number]) }}"
@@ -135,7 +135,7 @@
 
             <!-- Hot Titles -->
             <div class="bg-white rounded-2xl shadow-md p-6 mb-6">
-                <h3 class="text-lg font-bold mb-4 text-orange-manga-600">🔥 HOT TITLES</h3>
+                <h3 class="text-lg font-bold mb-4 text-orange-manga-600">🔥 Truyện HOT</h3>
                 <div class="space-y-3">
                     @foreach($hotTitles as $manga)
                     <a href="{{ route('manga.show', $manga->slug) }}" class="flex items-center space-x-3 hover:bg-orange-manga-50 p-2 rounded-lg transition">

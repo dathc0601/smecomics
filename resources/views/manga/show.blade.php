@@ -22,20 +22,20 @@
                         <h1 class="text-3xl font-bold mb-4">{{ $manga->title }}</h1>
 
                         <div class="grid grid-cols-2 gap-3 mb-4 text-sm">
-                            <div><span class="font-semibold">Author:</span> {{ $manga->author ?? 'Unknown' }}</div>
-                            <div><span class="font-semibold">Type:</span> <span class="capitalize">{{ $manga->type }}</span></div>
-                            <div><span class="font-semibold">Status:</span> <span class="capitalize badge badge-{{ $manga->status == 'completed' ? 'end' : 'new' }}">{{ $manga->status }}</span></div>
-                            <div><span class="font-semibold">Released:</span> {{ $manga->release_year }}</div>
-                            <div><span class="font-semibold">Views:</span> {{ number_format($manga->view_count) }}</div>
-                            <div><span class="font-semibold">Rating:</span> ⭐ {{ $manga->rating }} ({{ $manga->rating_count }} votes)</div>
+                            <div><span class="font-semibold">Tác giả:</span> {{ $manga->author ?? 'Admin' }}</div>
+                            <div><span class="font-semibold">Loại truyện:</span> <span class="capitalize">{{ $manga->type }}</span></div>
+                            <div><span class="font-semibold">Trạng thái:</span> <span class="capitalize badge badge-{{ $manga->status == 'completed' ? 'end' : 'new' }}">{{ $manga->status }}</span></div>
+                            <div><span class="font-semibold">Xuất bản:</span> {{ $manga->release_year ?? 'N/A' }}</div>
+                            <div><span class="font-semibold">Lượt xem:</span> {{ number_format($manga->view_count) }}</div>
+                            <div><span class="font-semibold">Đánh giá:</span> ⭐ {{ $manga->rating }} ({{ $manga->rating_count }} bình chọn)</div>
                         </div>
 
                         <!-- Genres -->
                         <div class="mb-4">
-                            <span class="font-semibold text-sm">Genres:</span>
+                            <span class="font-semibold text-sm">Thể loại:</span>
                             <div class="mt-2 flex flex-wrap gap-2">
                                 @foreach($manga->genres as $genre)
-                                <a href="{{ route('manga.index', ['genre' => $genre->slug]) }}" class="tag-pill">
+                                <a href="{{ route('genre.show', $genre) }}" class="tag-pill">
                                     {{ $genre->name }}
                                 </a>
                                 @endforeach
@@ -69,15 +69,17 @@
             <!-- Description -->
             <section class="bg-white rounded-2xl shadow-md p-6 mb-8">
                 <h2 class="text-xl font-bold mb-4 flex items-center text-orange-manga-600">
-                    <span class="mr-2">★</span> DESCRIPTION
+                    <span class="mr-2">★</span> Nội dung
                 </h2>
-                <p class="text-gray-700 leading-relaxed">{{ $manga->description }}</p>
+                <p class="text-gray-700 leading-relaxed">
+                    {!! nl2br($manga->description) !!}
+                </p>
             </section>
 
             <!-- Table of Contents -->
             <section class="bg-white rounded-2xl shadow-md p-6 mb-8">
                 <h2 class="text-xl font-bold mb-4 flex items-center text-orange-manga-600">
-                    <span class="mr-2">📖</span> TABLE OF CONTENTS
+                    <span class="mr-2">📖</span> Danh sách chương
                 </h2>
                 <div class="gap-3">
                     @foreach($manga->chapters->reverse() as $chapter)
@@ -94,18 +96,18 @@
 
             <!-- Comments Section -->
             <section class="bg-white rounded-2xl shadow-md p-6">
-                <h2 class="text-xl font-bold mb-4 text-orange-manga-600">💬 COMMENTS</h2>
+                <h2 class="text-xl font-bold mb-4 text-orange-manga-600">💬 Bình luận</h2>
 
                 @auth
                 <form action="{{ route('comments.store') }}" method="POST" class="mb-6">
                     @csrf
                     <input type="hidden" name="commentable_type" value="App\Models\Manga">
                     <input type="hidden" name="commentable_id" value="{{ $manga->id }}">
-                    <textarea name="content" rows="3" class="w-full rounded-lg border-gray-300 focus:border-orange-manga-500 focus:ring-orange-manga-500" placeholder="Write a comment..."></textarea>
-                    <button type="submit" class="btn-primary mt-2">Post Comment</button>
+                    <textarea name="content" rows="3" class="w-full rounded-lg border-gray-300 focus:border-orange-manga-500 focus:ring-orange-manga-500" placeholder="Nhập nội dung..."></textarea>
+                    <button type="submit" class="btn-primary mt-2">Bình luận</button>
                 </form>
                 @else
-                <p class="mb-6 text-gray-600">Please <a href="{{ route('login') }}" class="text-orange-manga-600 hover:underline">login</a> to comment.</p>
+                <p class="mb-6 text-gray-600">Vui lòng <a href="{{ route('login') }}" class="text-orange-manga-600 hover:underline">đăng nhập</a> để tham gia bịnh luận.</p>
                 @endauth
 
                 <div class="space-y-4">
@@ -126,11 +128,11 @@
         <div class="lg:col-span-1">
             <!-- Hot Titles -->
             <div class="bg-white rounded-2xl shadow-md p-6 mb-6">
-                <h3 class="text-lg font-bold mb-4 text-orange-manga-600">🔥 HOT TITLES</h3>
+                <h3 class="text-lg font-bold mb-4 text-orange-manga-600">🔥 Đang HOT</h3>
                 <div class="space-y-3">
                     @foreach($hotTitles as $hotManga)
                     <a href="{{ route('manga.show', $hotManga->slug) }}" class="flex items-center space-x-3 hover:bg-orange-manga-50 p-2 rounded-lg transition">
-                        <img src="{{ $hotManga->cover_image ?? 'https://placehold.co/60x80' }}"
+                        <img src="{{ $hotManga->cover_image ? \Illuminate\Support\Facades\Storage::url($hotManga->cover_image) : 'https://placehold.co/60x80' }}"
                              alt="{{ $hotManga->title }}"
                              class="w-12 h-16 object-cover rounded">
                         <div class="flex-1 min-w-0">
@@ -143,10 +145,10 @@
 
             <!-- Genres Cloud -->
             <div class="bg-white rounded-2xl shadow-md p-6">
-                <h3 class="text-lg font-bold mb-4 text-orange-manga-600">🏷️ TAGS</h3>
+                <h3 class="text-lg font-bold mb-4 text-orange-manga-600">🏷️ Thể loại</h3>
                 <div class="flex flex-wrap gap-2">
                     @foreach(\App\Models\Genre::all() as $genre)
-                    <a href="{{ route('manga.index', ['genre' => $genre->slug]) }}" class="tag-pill text-xs">
+                    <a href="{{ route('genre.show', $genre) }}" class="tag-pill text-xs">
                         {{ $genre->name }}
                     </a>
                     @endforeach

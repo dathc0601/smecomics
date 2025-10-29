@@ -5,8 +5,8 @@
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-800 mb-2">My Bookmarks</h1>
-        <p class="text-gray-600">Your saved manga collection</p>
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">Đã lưu</h1>
+        <p class="text-gray-600">Danh sách những truyện đã lưu</p>
     </div>
 
     @if($bookmarks->count() > 0)
@@ -39,7 +39,7 @@
                         </p>
                         @endif
                         <p class="text-xs text-gray-400 mt-2">
-                            Bookmarked {{ $bookmark->created_at->diffForHumans() }}
+                            Đã lưu {{ $bookmark->created_at->diffForHumans() }}
                         </p>
                     </div>
                 </a>
@@ -69,10 +69,10 @@
         <!-- Empty State -->
         <div class="text-center py-16">
             <div class="text-6xl mb-4">📚</div>
-            <h3 class="text-xl font-semibold text-gray-800 mb-2">No bookmarks yet</h3>
-            <p class="text-gray-600 mb-6">Start bookmarking your favorite manga to see them here</p>
+            <h3 class="text-xl font-semibold text-gray-800 mb-2">Chưa có truyện nào được lưu</h3>
+            <p class="text-gray-600 mb-6">Hãy xem danh sách truyện và chọn bộ mà bạn yêu thích</p>
             <a href="{{ route('manga.index') }}" class="btn-primary">
-                Browse Manga
+                Xem danh sách truyện
             </a>
         </div>
     @endif

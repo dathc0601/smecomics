@@ -1,46 +1,33 @@
 @extends('layouts.public')
 
-@section('title', 'Danh sách truyện')
+@section('title', $genre->name . ' - Genre')
 
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-800 mb-2">Danh sách truyện</h1>
-        <p class="text-gray-600">Khám phá những bộ truyện chất lượng cao do team admin đăng tải</p>
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">{{ $genre->name }}</h1>
+        <p class="text-gray-600">Discover manga in the {{ $genre->name }} genre</p>
     </div>
 
     <!-- Filters -->
     <div class="bg-white rounded-2xl shadow-md p-6 mb-8">
-        <form action="{{ route('manga.index') }}" method="GET" class="space-y-4">
+        <form action="{{ route('genre.show', $genre) }}" method="GET" class="space-y-4">
             <!-- Search Bar -->
             <div>
                 <input type="text"
                        name="search"
                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-manga-500"
-                       placeholder="Tìm theo tên..."
+                       placeholder="Search manga by title..."
                        value="{{ request('search') }}">
             </div>
 
             <!-- Filter Options -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <!-- Genre Filter -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Thể loại</label>
-                    <select name="genre" class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-manga-500">
-                        <option value="">Tất cả</option>
-                        @foreach($genres as $genre)
-                            <option value="{{ $genre->slug }}" {{ request('genre') == $genre->slug ? 'selected' : '' }}>
-                                {{ $genre->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <!-- Type Filter -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Loại truyện</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Type</label>
                     <select name="type" class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-manga-500">
-                        <option value="">Tất cả</option>
+                        <option value="">All Types</option>
                         <option value="manhwa" {{ request('type') == 'manhwa' ? 'selected' : '' }}>Manhwa</option>
                         <option value="manga" {{ request('type') == 'manga' ? 'selected' : '' }}>Manga</option>
                         <option value="novel" {{ request('type') == 'novel' ? 'selected' : '' }}>Novel</option>
@@ -49,11 +36,11 @@
 
                 <!-- Status Filter -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Trạng thái</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
                     <select name="status" class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-manga-500">
-                        <option value="">Tất cả</option>
+                        <option value="">All Status</option>
                         <option value="ongoing" {{ request('status') == 'ongoing' ? 'selected' : '' }}>Ongoing</option>
-                        <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Hoàn thành</option>
+                        <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Completed</option>
                         <option value="hiatus" {{ request('status') == 'hiatus' ? 'selected' : '' }}>Hiatus</option>
                     </select>
                 </div>
@@ -61,16 +48,16 @@
                 <!-- Submit Button -->
                 <div class="flex items-end">
                     <button type="submit" class="w-full btn-primary">
-                        Áp dụng
+                        Apply Filters
                     </button>
                 </div>
             </div>
 
             <!-- Clear Filters -->
-            @if(request()->hasAny(['search', 'genre', 'type', 'status']))
+            @if(request()->hasAny(['search', 'type', 'status']))
             <div class="text-center">
-                <a href="{{ route('manga.index') }}" class="text-orange-manga-600 hover:text-orange-manga-700 text-sm font-medium">
-                    Xoá bộ lọc
+                <a href="{{ route('genre.show', $genre) }}" class="text-orange-manga-600 hover:text-orange-manga-700 text-sm font-medium">
+                    Clear All Filters
                 </a>
             </div>
             @endif
@@ -118,9 +105,9 @@
                     @endif
                     @if($manga->genres->count() > 0)
                     <div class="flex flex-wrap gap-1 mt-2">
-                        @foreach($manga->genres->take(2) as $genre)
+                        @foreach($manga->genres->take(2) as $genreTag)
                         <span class="text-xs px-2 py-1 bg-orange-manga-100 text-orange-manga-700 rounded">
-                            {{ $genre->name }}
+                            {{ $genreTag->name }}
                         </span>
                         @endforeach
                     </div>
@@ -142,7 +129,7 @@
             <div class="text-6xl mb-4">📚</div>
             <h3 class="text-xl font-semibold text-gray-800 mb-2">No manga found</h3>
             <p class="text-gray-600 mb-6">Try adjusting your filters or search terms</p>
-            <a href="{{ route('manga.index') }}" class="btn-primary">
+            <a href="{{ route('genre.show', $genre) }}" class="btn-primary">
                 Clear Filters
             </a>
         </div>

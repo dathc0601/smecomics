@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ setting('site_title', config('app.name', 'SME Comics')) }} - @yield('title', setting('site_tagline', 'Read Manga Online'))</title>
+    <title>@yield('title', setting('site_tagline', 'Read Manga Online')) {{ setting('site_title', config('app.name', 'SME Comics')) }}</title>
 
     <!-- SEO Meta Tags -->
     <meta name="description" content="{{ setting('site_description', 'Read manga online for free') }}">

@@ -3,6 +3,7 @@
 use App\Http\Controllers\{
     HomeController,
     MangaController,
+    GenreController,
     ChapterController,
     CommentController,
     BookmarkController,
@@ -30,11 +31,14 @@ Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap.i
 Route::get('/sitemap-{type}.xml', [SitemapController::class, 'show'])->name('sitemap.show');
 
 // Manga routes
-Route::get('/manga', [MangaController::class, 'index'])->name('manga.index');
-Route::get('/manga/{manga}', [MangaController::class, 'show'])->name('manga.show');
+Route::get('/truyen', [MangaController::class, 'index'])->name('manga.index');
+Route::get('/truyen/{manga}', [MangaController::class, 'show'])->name('manga.show');
+
+// Genre routes
+Route::get('/the-loai/{genre:slug}', [GenreController::class, 'show'])->name('genre.show');
 
 // Chapter reader
-Route::get('/manga/{manga}/chapter/{chapterNumber}', [ChapterController::class, 'show'])->name('chapter.show');
+Route::get('/truyen/{manga}/chuong/{chapterNumber}', [ChapterController::class, 'show'])->name('chapter.show');
 
 // Authenticated routes
 Route::middleware('auth')->group(function () {
@@ -43,11 +47,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 
     // Bookmarks
-    Route::post('/manga/{manga}/bookmark', [BookmarkController::class, 'toggle'])->name('bookmarks.toggle');
+    Route::post('/truyen/{manga}/bookmark', [BookmarkController::class, 'toggle'])->name('bookmarks.toggle');
     Route::get('/bookmarks', [BookmarkController::class, 'index'])->name('bookmarks.index');
 
     // Ratings
-    Route::post('/manga/{manga}/rating', [RatingController::class, 'store'])->name('ratings.store');
+    Route::post('/truyen/{manga}/rating', [RatingController::class, 'store'])->name('ratings.store');
 
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

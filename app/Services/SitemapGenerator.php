@@ -157,7 +157,7 @@ class SitemapGenerator
             ->chunk(1000, function ($genres) use (&$urls) {
                 foreach ($genres as $genre) {
                     $urls[] = [
-                        'loc' => $this->baseUrl . '/manga?genre=' . $genre->slug,
+                        'loc' => route('genre.show', $genre),
                         'lastmod' => $genre->updated_at->format('Y-m-d'),
                         'changefreq' => 'weekly',
                         'priority' => '0.7',
