@@ -9,7 +9,8 @@ use App\Http\Controllers\{
     BookmarkController,
     RatingController,
     ProfileController,
-    SitemapController
+    SitemapController,
+    BlogController
 };
 use App\Http\Controllers\Admin\{
     DashboardController as AdminDashboardController,
@@ -19,7 +20,10 @@ use App\Http\Controllers\Admin\{
     AuthorController as AdminAuthorController,
     TagController as AdminTagController,
     UserController as AdminUserController,
-    SettingController as AdminSettingController
+    SettingController as AdminSettingController,
+    BlogPostController as AdminBlogPostController,
+    BlogCategoryController as AdminBlogCategoryController,
+    UploadController as AdminUploadController
 };
 use Illuminate\Support\Facades\Route;
 
@@ -39,6 +43,15 @@ Route::get('/the-loai/{genre:slug}', [GenreController::class, 'show'])->name('ge
 
 // Chapter reader
 Route::get('/truyen/{manga}/chuong/{chapterNumber}', [ChapterController::class, 'show'])->name('chapter.show');
+
+// Blog public routes
+Route::prefix('blogs')->name('blog.')->group(function () {
+    Route::get('/', [BlogController::class, 'index'])->name('index');
+    Route::get('/category/{category}', [BlogController::class, 'category'])->name('category');
+    Route::get('/tag/{tag}', [BlogController::class, 'tag'])->name('tag');
+    Route::get('/author/{author}', [BlogController::class, 'author'])->name('author');
+    Route::get('/{post}', [BlogController::class, 'show'])->name('show');
+});
 
 // Authenticated routes
 Route::middleware('auth')->group(function () {
@@ -81,6 +94,15 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('settings', [AdminSettingController::class, 'index'])->name('settings.index');
     Route::post('settings', [AdminSettingController::class, 'update'])->name('settings.update');
     Route::delete('settings/image', [AdminSettingController::class, 'deleteImage'])->name('settings.delete-image');
+
+    // Blog management
+    Route::prefix('blog')->name('blog.')->group(function () {
+        Route::resource('posts', AdminBlogPostController::class)->except(['show']);
+        Route::resource('categories', AdminBlogCategoryController::class)->except(['show']);
+    });
+
+    // TinyMCE image upload
+    Route::post('upload/tinymce', [AdminUploadController::class, 'tinymceUpload'])->name('upload.tinymce');
 });
 
 require __DIR__.'/auth.php';

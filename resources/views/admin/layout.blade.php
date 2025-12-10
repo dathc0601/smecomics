@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Admin Panel') - SME Comics</title>
     @vite(['resources/css/admin.css', 'resources/js/admin.js'])
 
@@ -36,6 +37,13 @@
                 </a>
                 <a href="{{ route('admin.users.index') }}" class="admin-nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
                     👥 Users
+                </a>
+                <hr class="my-4 border-gray-700">
+                <a href="{{ route('admin.blog.posts.index') }}" class="admin-nav-link {{ request()->routeIs('admin.blog.posts.*') ? 'active' : '' }}">
+                    📝 Blog Posts
+                </a>
+                <a href="{{ route('admin.blog.categories.index') }}" class="admin-nav-link {{ request()->routeIs('admin.blog.categories.*') ? 'active' : '' }}">
+                    📁 Blog Categories
                 </a>
                 <hr class="my-4 border-gray-700">
                 <a href="{{ route('admin.settings.index') }}" class="admin-nav-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">

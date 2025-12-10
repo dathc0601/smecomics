@@ -31,6 +31,8 @@ import 'tinymce/skins/ui/oxide/skin.css';
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize TinyMCE for textareas with class 'tinymce'
     if (document.querySelector('.tinymce')) {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+
         tinymce.init({
             selector: '.tinymce',
             license_key: 'gpl',
@@ -43,6 +45,77 @@ document.addEventListener('DOMContentLoaded', function() {
             branding: false,
             promotion: false,
             content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; font-size: 14px; line-height: 1.6; padding: 1rem; }',
+
+            // Image upload configuration
+            automatic_uploads: true,
+            images_upload_url: '/admin/upload/tinymce',
+            images_upload_credentials: true,
+            images_reuse_filename: true,
+            images_upload_handler: function (blobInfo, progress) {
+                return new Promise((resolve, reject) => {
+                    const formData = new FormData();
+                    formData.append('file', blobInfo.blob(), blobInfo.filename());
+
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('POST', '/admin/upload/tinymce');
+
+                    xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+                    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+                    xhr.upload.onprogress = function (e) {
+                        progress(e.loaded / e.total * 100);
+                    };
+
+                    xhr.onload = function () {
+                        if (xhr.status === 200) {
+                            const json = JSON.parse(xhr.responseText);
+                            if (json.location) {
+                                resolve(json.location);
+                            } else {
+                                reject('Invalid response from server');
+                            }
+                        } else if (xhr.status === 422) {
+                            const json = JSON.parse(xhr.responseText);
+                            reject(json.message || 'Validation failed');
+                        } else {
+                            reject('HTTP Error: ' + xhr.status);
+                        }
+                    };
+
+                    xhr.onerror = function () {
+                        reject('Image upload failed due to a network error');
+                    };
+
+                    xhr.send(formData);
+                });
+            },
+
+            // File picker for browsing/selecting images
+            file_picker_types: 'image',
+            file_picker_callback: function (cb, value, meta) {
+                const input = document.createElement('input');
+                input.setAttribute('type', 'file');
+                input.setAttribute('accept', 'image/*');
+
+                input.onchange = function () {
+                    const file = this.files[0];
+                    const reader = new FileReader();
+
+                    reader.onload = function () {
+                        const id = 'blobid' + (new Date()).getTime();
+                        const blobCache = tinymce.activeEditor.editorUpload.blobCache;
+                        const base64 = reader.result.split(',')[1];
+                        const blobInfo = blobCache.create(id, file, base64);
+                        blobCache.add(blobInfo);
+
+                        cb(blobInfo.blobUri(), { title: file.name });
+                    };
+
+                    reader.readAsDataURL(file);
+                };
+
+                input.click();
+            }
         });
     }
 

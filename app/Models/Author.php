@@ -19,6 +19,11 @@ class Author extends Model
         return $this->hasMany(Manga::class);
     }
 
+    public function blogPosts(): HasMany
+    {
+        return $this->hasMany(BlogPost::class);
+    }
+
     public function getRouteKeyName()
     {
         return 'slug';

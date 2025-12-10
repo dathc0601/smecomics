@@ -17,6 +17,11 @@ class Tag extends Model
         return $this->belongsToMany(Manga::class);
     }
 
+    public function blogPosts(): BelongsToMany
+    {
+        return $this->belongsToMany(BlogPost::class, 'blog_post_tag');
+    }
+
     public function getRouteKeyName()
     {
         return 'slug';

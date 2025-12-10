@@ -120,6 +120,9 @@
                     <a href="{{ route('manga.index') }}" class="text-white hover:text-orange-manga-100 font-medium transition">
                         All Manga
                     </a>
+                    <a href="{{ route('blog.index') }}" class="text-white hover:text-orange-manga-100 font-medium transition">
+                        Blog
+                    </a>
                 </div>
 
                 <!-- Auth Links -->
